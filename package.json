@@ -1,5 +1,8 @@
 {
-  "version": "0.1.0",
+  "version": "0.0.1",
+  "name": "ez-di",
+  "description": "Tiny dependency injection React library",
+  "author": "vanilla-wave",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -33,8 +36,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "ez-di",
-  "author": "Roman",
   "module": "dist/ez-di.esm.js",
   "size-limit": [
     {
