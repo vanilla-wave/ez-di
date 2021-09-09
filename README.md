@@ -7,6 +7,9 @@ Proof of concept tiny dependency injection React library.
 const ButtonBase = () => <button className="base"></button>
 const RedButton = () => <button className="red"></button>
 
+// import diBlock and DiProvider
+import { DiProvider, diBlock } from '@vanilla-wave/ez-di';
+
 // 1. in target component. Make component swapable
 const Button = diBlock('Button')(ButtonBase)
 
