@@ -71,13 +71,15 @@ describe('nesting', () => {
 });
 
 describe('typings', () => {
+  type ButtonPropsType = { label: string };
+
   describe('component typing', () => {
     it('happy path', () => {
-      const ButtonBase: FC<{ label: string }> = ({ label }) => (
+      const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
         <button className="base">{label}</button>
       );
       const Button = diBlock('Button')(ButtonBase);
-      const OverrideButton: FC<{ label: string }> = ({label}) => (
+      const OverrideButton: FC<ButtonPropsType> = ({ label }) => (
         <button className="override">{label}</button>
       );
 
@@ -91,11 +93,11 @@ describe('typings', () => {
     });
 
     it('no required props -> error', () => {
-      const ButtonBase: FC<{ label: string }> = ({ label }) => (
+      const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
         <button className="base">{label}</button>
       );
       const Button = diBlock('Button')(ButtonBase);
-      const OverrideButton = ({label}) => (
+      const OverrideButton: FC<ButtonPropsType> = ({ label }) => (
         <button className="override">{label}</button>
       );
 
@@ -105,6 +107,51 @@ describe('typings', () => {
           <Button />
         </DiProvider>
       );
+    });
+  });
+
+  describe('registry typing', () => {
+    interface RegistryType {
+      Button: React.ComponentType<ButtonPropsType>;
+    }
+
+    it('happy path', () => {
+      const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
+        <button className="base">{label}</button>
+      );
+      const Button = diBlock<RegistryType>('Button')(ButtonBase);
+      const OverrideButton: FC<ButtonPropsType> = ({ label }) => (
+        <button className="override">{label}</button>
+      );
+
+      const App = () => (
+        <DiProvider registry={{ Button: OverrideButton }}>
+          <Button label="123" />
+        </DiProvider>
+      );
+
+      // no type errors
+    });
+
+    it('wrong component in registry -> throw error', () => {
+      const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
+        <button className="base">{label}</button>
+      );
+      const Button = diBlock<RegistryType>('Button')(ButtonBase);
+      const OverrideButton: FC<{ label: number }> = ({ label }) => (
+        <button className="override">{label}</button>
+      );
+
+      const App = () => (
+        <div>
+          {/* @ts-expect-error */}
+          <DiProvider<RegistryType> registry={{ Button: OverrideButton }}>
+            <Button label="123" />
+          </DiProvider>
+        </div>
+      );
+
+      // no type errors
     });
   });
 });

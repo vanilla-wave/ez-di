@@ -1,16 +1,18 @@
-import React, { useContext, useMemo } from 'react';
+import React, { ReactNode, useContext, useMemo } from 'react';
 
-type RegistryDefaultType = Record<string, any>;
-type DiContextType<RegistryType = RegistryDefaultType> = React.Context<
-  RegistryType
->;
+type RegistryType = Record<string, React.ComponentType<any>>;
 
-const DiContext: DiContextType = React.createContext<RegistryDefaultType>({});
+const DiContext = React.createContext<RegistryType>({});
 
-export const DiProvider: React.FC<{ registry: RegistryDefaultType }> = ({
+interface DiProviderProps<R extends object> {
+  children?: ReactNode;
+  registry: R;
+}
+
+export const DiProvider = <R extends object>({
   children,
   registry,
-}) => {
+}: DiProviderProps<R>) => {
   const outerRegistry = useContext(DiContext);
 
   const mergedRegistry = useMemo(
@@ -26,11 +28,13 @@ export const DiProvider: React.FC<{ registry: RegistryDefaultType }> = ({
   );
 };
 
-export const diBlock = (name: string) => <P extends object>(
+export const diBlock = <R extends object>(name: keyof R) => <P extends object>(
   Component: React.ComponentType<P>
 ) => (props: P) => {
-  const registry = useContext(DiContext);
-  const ComponentFromRegistry = registry[name];
+  const registry = useContext(DiContext) as R;
+  const ComponentFromRegistry = (registry[
+    name
+  ] as unknown) as React.ComponentType<P>;
 
   if (ComponentFromRegistry) {
     return <ComponentFromRegistry {...props} />;
