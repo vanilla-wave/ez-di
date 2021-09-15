@@ -39,7 +39,7 @@ npm i @vanilla-wave/ez-di
 
 Main idea - give opportunity to swap components in app tree  without writting code.
 
-Wrapping component into `diBlock('ComponentName', Components)` creates slot. There are no changes in render. But in place component `<Button />` there are slot with name `SubmitButton`. You can set component for slot in registry `<DiProvider registry={...}>`
+Wrapping component into `diBlock('ComponentName', Component)` creates slot. In place of component `<Button />` appears slot with name `SubmitButton`. There are no changes in render, because default slot value - component itself.
 
 ```typescript
 const ButtonComponent = (...) => (...)
@@ -53,6 +53,8 @@ const App = () =>  (
   </form>
 )
 ```
+
+You can set component for slot in registry `<DiProvider registry={...}>`
 
 When you set in registry component with name `SubmitButton`, it will be render in place of `<Button />`.
 
@@ -80,11 +82,15 @@ You can nest DiProvider. Registry value will be merged. It useful, when you need
 0. Find replacable part in your app. Wrap them in diBlock.
 1. Wrap your app in DiRegistry.
 2. Create components for slots. When you set component in registry it will render instead of default component(wrapped in diBlock)
+3. Now you can manage slots content with registry value. For example:
 
-## TODO
+- set another components for mobile device
+- set another component if user in experiment
+- etc
+
+## PROJECT TODO
 
 - Better types(remove any + simple usage with TS).
-- Guide.
 - Registry control. Dynamicly add/remove/swap components.
 - Better docs with examples.
 
