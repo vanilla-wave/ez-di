@@ -77,8 +77,8 @@ describe('typings', () => {
         <button className="base">{label}</button>
       );
       const Button = diBlock('Button')(ButtonBase);
-      const OverrideButton = (label: string) => (
-        <button className="override"></button>
+      const OverrideButton: FC<{ label: string }> = ({label}) => (
+        <button className="override">{label}</button>
       );
 
       const App = () => (
@@ -95,8 +95,8 @@ describe('typings', () => {
         <button className="base">{label}</button>
       );
       const Button = diBlock('Button')(ButtonBase);
-      const OverrideButton = (label: string) => (
-        <button className="override"></button>
+      const OverrideButton = ({label}) => (
+        <button className="override">{label}</button>
       );
 
       const App = () => (
