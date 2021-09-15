@@ -1,9 +1,13 @@
 import React, { useContext, useMemo } from 'react';
 
-type Registry = Record<string, any>;
-const DiContext = React.createContext<Registry>({});
+type RegistryDefaultType = Record<string, any>;
+type DiContextType<RegistryType = RegistryDefaultType> = React.Context<
+  RegistryType
+>;
 
-export const DiProvider: React.FC<{ registry: Registry }> = ({
+const DiContext: DiContextType = React.createContext<RegistryDefaultType>({});
+
+export const DiProvider: React.FC<{ registry: RegistryDefaultType }> = ({
   children,
   registry,
 }) => {
@@ -22,7 +26,9 @@ export const DiProvider: React.FC<{ registry: Registry }> = ({
   );
 };
 
-export const diBlock = (name: string) => (Component: any) => (props: any) => {
+export const diBlock = (name: string) => <P extends object>(
+  Component: React.ComponentType<P>
+) => (props: P) => {
   const registry = useContext(DiContext);
   const ComponentFromRegistry = registry[name];
 

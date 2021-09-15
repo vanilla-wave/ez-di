@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
+import { FC } from 'react';
 import { DiProvider, diBlock } from '../src';
 
 const ButtonBase = () => <button className="base"></button>;
@@ -66,5 +67,44 @@ describe('nesting', () => {
 
     expect(wrapper.find('.base2').exists()).toBeFalsy();
     expect(wrapper.find('.blue').exists()).toBeTruthy();
+  });
+});
+
+describe('typings', () => {
+  describe('component typing', () => {
+    it('happy path', () => {
+      const ButtonBase: FC<{ label: string }> = ({ label }) => (
+        <button className="base">{label}</button>
+      );
+      const Button = diBlock('Button')(ButtonBase);
+      const OverrideButton = (label: string) => (
+        <button className="override"></button>
+      );
+
+      const App = () => (
+        <DiProvider registry={{ Button: OverrideButton }}>
+          <Button label="123" />
+        </DiProvider>
+      );
+
+      // no type errors
+    });
+
+    it('no required props -> error', () => {
+      const ButtonBase: FC<{ label: string }> = ({ label }) => (
+        <button className="base">{label}</button>
+      );
+      const Button = diBlock('Button')(ButtonBase);
+      const OverrideButton = (label: string) => (
+        <button className="override"></button>
+      );
+
+      const App = () => (
+        <DiProvider registry={{ Button: OverrideButton }}>
+          {/* @ts-expect-error */}
+          <Button />
+        </DiProvider>
+      );
+    });
   });
 });
