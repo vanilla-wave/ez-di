@@ -83,6 +83,7 @@ describe('typings', () => {
         <button className="override">{label}</button>
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const App = () => (
         <DiProvider registry={{ Button: OverrideButton }}>
           <Button label="123" />
@@ -101,6 +102,7 @@ describe('typings', () => {
         <button className="override">{label}</button>
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const App = () => (
         <DiProvider registry={{ Button: OverrideButton }}>
           {/* @ts-expect-error */}
@@ -124,6 +126,7 @@ describe('typings', () => {
         <button className="override">{label}</button>
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const App = () => (
         <DiProvider registry={{ Button: OverrideButton }}>
           <Button label="123" />
@@ -142,6 +145,7 @@ describe('typings', () => {
         <button className="override">{label}</button>
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const App = () => (
         <div>
           {/* @ts-expect-error */}
