@@ -79,19 +79,74 @@ You can nest DiProvider. Registry value will be merged. It useful, when you need
 
 ## How to start
 
-0. Find replacable part in your app. Wrap them in diBlock.
-1. Wrap your app in DiRegistry.
+1. Find replacable part in your app. Wrap them in diBlock and specify name. You will use it later to swap component.
+Also you can use explicit typing `diBlock<RegistryType>` to prevent type errors.
+
+```typescript
+interface RegistryType {
+  Button: React.ComponentType<ButtonPropsType>;
+}
+
+const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
+  <button className="base">{label}</button>
+);
+const Button = diBlock<RegistryType>('Button')(ButtonBase);
+```
+
+0. Wrap your app in DiRegistry. Optional – you can use registry typpe here `<DiProvider<RegistryType> ... >` 
+
+```typescript
+interface RegistryType {
+  Button: React.ComponentType<ButtonPropsType>;
+}
+
+const OverrideButton: FC<{ label: number }> = ({ label }) => (
+  <button className="override">{label}</button>
+);
+
+const App = () => (
+  <div>
+    {/* @ts-expect-error */}
+    <DiProvider<RegistryType> registry={{ Button: OverrideButton }}>
+      <Button label="123" />
+    </DiProvider>
+  </div>
+);
+```
+
 2. Create components for slots. When you set component in registry it will render instead of default component(wrapped in diBlock)
+
+**Important** – override component should have same props as base components.
+
+```typescript
+const RedButton: FC<ButtonPropsType> = ({ label }) => (
+  <button className="override">{label}</button>
+);
+```
+
 3. Now you can manage slots content with registry value. For example:
 
 - set another components for mobile device
 - set another component if user in experiment
 - etc
 
+Falsy value will be ignored, and default component will be rendered.
+
+```typescript
+const registry = {
+  Button: isUserInExperiment ? RedButton :  undefined,
+}
+
+const App = () => (
+  <DiProvider registry={{ Button: OverrideButton }}>
+    <Button label="123" />
+  </DiProvider>
+);
+```
+
 ## PROJECT TODO
 
-- Better types(remove any + simple usage with TS).
 - Registry control. Dynamicly add/remove/swap components.
-- Better docs with examples.
+- library parts description in README
 
 Created using [TSDX](https://github.com/formium/tsdx)
