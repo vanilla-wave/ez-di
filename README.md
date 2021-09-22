@@ -93,7 +93,7 @@ const ButtonBase: FC<ButtonPropsType> = ({ label }) => (
 const Button = diBlock<RegistryType>('Button')(ButtonBase);
 ```
 
-0. Wrap your app in DiRegistry. Optional – you can use registry typpe here `<DiProvider<RegistryType> ... >` 
+0. Wrap your app in DiRegistry. Optional – you can use registry type here `<DiProvider<RegistryType> ... >` 
 
 ```typescript
 interface RegistryType {
