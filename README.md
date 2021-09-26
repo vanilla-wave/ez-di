@@ -146,7 +146,9 @@ const App = () => (
 
 ## PROJECT TODO
 
-- Registry control. Dynamicly add/remove/swap components.
+- DI for services(not component DI)
+- Registry control: constant, factory, classes
+- Registry control: dynamicly add/remove/swap components.
 - library parts description in README
 
 Created using [TSDX](https://github.com/formium/tsdx)
