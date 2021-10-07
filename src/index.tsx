@@ -10,20 +10,20 @@ interface DiProviderProps<R extends object> {
 }
 
 type Store<I> = {
-  [key in keyof I]: I[key] 
-}
+  [key in keyof I]: I[key];
+};
 export class Registry<S extends Record<string, unknown>> {
   constructor(private store: S = {} as S) {}
 
   get<K extends keyof S>(key: K): S[K] {
-    return this.store[key] as unknown as S[K];
+    return (this.store[key] as unknown) as S[K];
   }
 
   extend<I extends Record<string, unknown>>(instances: I): Registry<S & I> {
     this.store = {
       ...this.store,
-      ...instances
-    }
+      ...instances,
+    };
 
     return this as Registry<S & I>;
   }
